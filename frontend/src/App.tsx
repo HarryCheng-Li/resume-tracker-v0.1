@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './hooks/useAuth';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+import { Toaster } from './lib/toast';
 
 // Pages
 import LoginPage from './pages/LoginPage';
@@ -20,10 +22,11 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
-          <Routes>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Router>
+            <Routes>
             <Route path="/login" element={<LoginPage />} />
             
             <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
@@ -74,6 +77,8 @@ function App() {
         </Router>
       </AuthProvider>
     </QueryClientProvider>
+    <Toaster />
+    </ErrorBoundary>
   );
 }
 

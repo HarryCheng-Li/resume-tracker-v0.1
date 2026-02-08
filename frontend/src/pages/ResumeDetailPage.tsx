@@ -5,6 +5,7 @@ import ResumeStatusBadge from '../components/ResumeStatusBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ArrowLeft, Download, User as UserIcon } from 'lucide-react';
 import { format } from 'date-fns';
+import { showToast } from '../lib/toast';
 
 const ResumeDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +57,7 @@ const ResumeDetailPage: React.FC = () => {
           setIsLoading(false);
         }, 500);
       } catch (error) {
-        console.error("Failed to fetch resume details", error);
+        showToast.error('加载简历详情失败');
         setIsLoading(false);
       }
     };
@@ -66,7 +67,7 @@ const ResumeDetailPage: React.FC = () => {
 
   const handleStatusChange = async (newStatus: ResumeStatus) => {
     // Implement status change logic
-    console.log(`Changing status to ${newStatus} with comment: ${comment}`);
+    showToast.info(`状态变更为 ${newStatus}`);
     // await api.put(`/resumes/${id}/status`, { status: newStatus, comment });
     // Refresh data...
   };

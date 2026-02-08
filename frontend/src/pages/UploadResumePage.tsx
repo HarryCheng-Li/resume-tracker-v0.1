@@ -5,6 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { parseResume, isSupportedFileType, ParsedResumeData } from '../lib/resumeParser';
 import { useAuth } from '../hooks/useAuth';
 import { createResume } from '../lib/mockData';
+import { showToast } from '../lib/toast';
 import { CandidateType, EducationLevel, ExcellenceTag, RecruitmentScenario, SchoolTag, Source, SCHOOL_TAG_LABELS, EXCELLENCE_TAG_LABELS, EDUCATION_LEVEL_LABELS } from '../types';
 
 const UploadResumePage: React.FC = () => {
@@ -56,7 +57,7 @@ const UploadResumePage: React.FC = () => {
             }));
           }
         } catch (error) {
-          console.error('解析失败:', error);
+          showToast.warning('简历解析失败，请手动填写');
         } finally {
           setIsParsing(false);
         }
@@ -95,9 +96,10 @@ const UploadResumePage: React.FC = () => {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      showToast.success('简历上传成功');
       navigate('/resumes');
     } catch (error) {
-      console.error("Upload failed", error);
+      showToast.error('上传失败，请重试');
     } finally {
       setIsUploading(false);
     }
